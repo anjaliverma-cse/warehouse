@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WFS | Warehouse Fulfillment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">W</div>
+        <div><strong>WAREFLOW</strong><span>FULFILLMENT SUITE</span></div>
+      </div>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="nav-list">
+        <button class="nav-item active" data-page="dashboard"><span class="nav-icon">▦</span>Dashboard</button>
+        <button class="nav-item" data-page="orders"><span class="nav-icon">▤</span>Orders <span class="nav-count" id="navOrderCount">0</span></button>
+        <button class="nav-item" data-page="inventory"><span class="nav-icon">▥</span>Inventory</button>
+        <button class="nav-item" data-page="picking"><span class="nav-icon">⌕</span>Picking</button>
+        <button class="nav-item" data-page="packing"><span class="nav-icon">▣</span>Packing</button>
+        <button class="nav-item" data-page="dispatch"><span class="nav-icon">➤</span>Dispatch</button>
+        <button class="nav-item" data-page="reports"><span class="nav-icon">▧</span>Reports</button>
+        <button class="nav-item" data-page="analytics"><span class="nav-icon">◷</span>Analytics</button>
+        <button class="nav-item" data-page="tracking"><span class="nav-icon">◎</span>Order tracking</button>
+        <button class="nav-item" data-page="suppliers"><span class="nav-icon">▱</span>Suppliers</button>
+        <button class="nav-item" data-page="staff"><span class="nav-icon">♙</span>Staff</button>
+        <button class="nav-item" data-page="notifications"><span class="nav-icon">♢</span>Notifications <span class="nav-count" id="navAlertCount">0</span></button>
+        <button class="nav-item" data-page="barcode"><span class="nav-icon">▥</span>Barcode tools</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-card">
+          <div class="help-orb">✦</div>
+          <strong>Need a hand?</strong>
+          <p>Keep your warehouse moving smoothly.</p>
+          <button id="helpBtn">View quick guide <span>↗</span></button>
+        </div>
+        <div class="profile">
+          <div class="avatar">54</div>
+          <div><strong>Project Admin</strong><span>Roll No. 54</span></div>
+          <button class="more-btn" title="Profile">•••</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu" id="mobileMenu" aria-label="Open menu">☰</button>
+          <div class="breadcrumb">Workspace <span>/</span> <strong id="crumb">Dashboard</strong></div>
+        </div>
+        <div class="topbar-actions">
+          <div class="live-pill" id="connectionStatus"><i></i> Local demo mode</div>
+          <button class="icon-btn" id="themeBtn" title="Toggle theme">◐</button>
+          <button class="icon-btn" id="signOutBtn" title="Sign out">⇥</button>
+          <button class="icon-btn" id="resetBtn" title="Reset demo data">↻</button>
+          <div class="top-avatar">PA</div>
+        </div>
+      </header>
+
+      <section class="page active" id="page-dashboard">
+        <div class="page-heading">
+          <div><div class="eyebrow">MONDAY, YOUR WORKSPACE</div><h1>Good day, Admin <span>✦</span></h1><p>Here’s what’s happening across your warehouse today.</p></div>
+          <button class="primary-btn" data-action="new-order">＋ Create new order</button>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-top"><span>Total orders</span><span class="stat-icon blue">▤</span></div><div class="stat-value" id="statTotal">0</div><div class="stat-foot"><span class="trend up">↗ Live</span><span>All orders</span></div></article>
+          <article class="stat-card"><div class="stat-top"><span>Pending orders</span><span class="stat-icon amber">◷</span></div><div class="stat-value" id="statPending">0</div><div class="stat-foot"><span class="trend neutral">In progress</span><span>Need attention</span></div></article>
+          <article class="stat-card"><div class="stat-top"><span>Ready to dispatch</span><span class="stat-icon violet">➤</span></div><div class="stat-value" id="statReady">0</div><div class="stat-foot"><span class="trend up">Packed</span><span>Awaiting dispatch</span></div></article>
+          <article class="stat-card"><div class="stat-top"><span>Completed</span><span class="stat-icon green">✓</span></div><div class="stat-value" id="statCompleted">0</div><div class="stat-foot"><span class="trend up">Delivered</span><span>Successfully closed</span></div></article>
+        </div>
+        <div class="dashboard-grid">
+          <article class="panel recent-panel">
+            <div class="panel-heading"><div><h2>Recent orders</h2><p>Track your latest order activity</p></div><button class="text-btn" data-goto="orders">View all orders ↗</button></div>
+            <div class="table-wrap"><table><thead><tr><th>ORDER ID</th><th>CUSTOMER</th><th>DATE</th><th>AMOUNT</th><th>STATUS</th></tr></thead><tbody id="recentOrders"></tbody></table></div>
+          </article>
+          <article class="panel activity-panel">
+            <div class="panel-heading"><div><h2>Fulfillment overview</h2><p>Order pipeline distribution</p></div><span class="tiny-tag">LIVE</span></div>
+            <div class="pipeline" id="pipeline"></div>
+            <div class="pipeline-legend"><span><i class="dot dot-blue"></i> Processing</span><span><i class="dot dot-violet"></i> Packed</span><span><i class="dot dot-green"></i> Dispatched</span></div>
+          </article>
+        </div>
+        <div class="bottom-grid">
+          <article class="panel quick-panel"><div class="panel-heading"><div><h2>Quick actions</h2><p>Common warehouse tasks</p></div></div><div class="quick-actions"><button data-action="new-order"><span class="quick-icon blue">＋</span><b>New order</b><small>Create a customer order</small></button><button data-goto="inventory"><span class="quick-icon amber">▥</span><b>Check stock</b><small>Review inventory levels</small></button><button data-goto="picking"><span class="quick-icon violet">⌕</span><b>Start picking</b><small>Prepare items for packing</small></button><button data-goto="dispatch"><span class="quick-icon green">➤</span><b>Dispatch order</b><small>Ship packed orders</small></button></div></article>
+          <article class="panel note-panel"><div class="note-icon">✦</div><div><h2>Warehouse tip</h2><p>Process older pending orders first to keep fulfillment times consistent and customers informed.</p><span>OPERATIONS INSIGHT</span></div></article>
+        </div>
+      </section>
+
+      <section class="page" id="page-orders">
+        <div class="page-heading"><div><div class="eyebrow">ORDER MANAGEMENT</div><h1>Orders</h1><p>Create, review and manage customer orders.</p></div><button class="primary-btn" data-action="new-order">＋ Add order</button></div>
+        <div class="toolbar"><div class="search-box"><span>⌕</span><input id="orderSearch" placeholder="Search order ID or customer..." /></div><select id="orderFilter"><option value="all">All statuses</option><option>Pending</option><option>Picking</option><option>Packed</option><option>Dispatched</option><option>Delivered</option></select></div>
+        <article class="panel"><div class="table-wrap"><table><thead><tr><th>ORDER ID</th><th>CUSTOMER</th><th>ITEMS</th><th>ORDER DATE</th><th>AMOUNT</th><th>STATUS</th><th>ACTION</th></tr></thead><tbody id="ordersTable"></tbody></table></div><div class="table-footer" id="orderCount"></div></article>
+      </section>
+
+      <section class="page" id="page-inventory">
+        <div class="page-heading"><div><div class="eyebrow">STOCK CONTROL</div><h1>Inventory</h1><p>Monitor product availability and stock levels.</p></div><button class="primary-btn" id="addProductBtn">＋ Add product</button></div>
+        <div class="stats-grid compact-stats"><article class="stat-card"><div class="stat-top"><span>Products</span><span class="stat-icon blue">▥</span></div><div class="stat-value" id="invProducts">0</div><div class="stat-foot">Active SKUs</div></article><article class="stat-card"><div class="stat-top"><span>Total units</span><span class="stat-icon violet">▦</span></div><div class="stat-value" id="invUnits">0</div><div class="stat-foot">Across all products</div></article><article class="stat-card"><div class="stat-top"><span>Low stock</span><span class="stat-icon amber">!</span></div><div class="stat-value" id="invLow">0</div><div class="stat-foot">Below reorder level</div></article></div>
+        <div class="toolbar"><div class="search-box"><span>⌕</span><input id="inventorySearch" placeholder="Search product or SKU..." /></div><select id="stockFilter"><option value="all">All stock levels</option><option value="low">Low stock</option><option value="healthy">Healthy stock</option></select></div>
+        <article class="panel"><div class="table-wrap"><table><thead><tr><th>PRODUCT</th><th>SKU</th><th>CATEGORY</th><th>UNIT PRICE</th><th>IN STOCK</th><th>STOCK LEVEL</th><th>ACTION</th></tr></thead><tbody id="inventoryTable"></tbody></table></div></article>
+      </section>
+
+      <section class="page" id="page-picking">
+        <div class="page-heading"><div><div class="eyebrow">WAREHOUSE OPERATIONS</div><h1>Order picking</h1><p>Pick items from storage and prepare orders for packing.</p></div><span class="outline-pill">PICK &amp; PREPARE</span></div>
+        <div class="process-banner"><div class="process-symbol">⌕</div><div><strong>Picking queue</strong><p>Orders waiting to be picked are listed below. Mark an order as picked when all items are collected.</p></div></div>
+        <div class="work-grid" id="pickingList"></div>
+      </section>
+
+      <section class="page" id="page-packing">
+        <div class="page-heading"><div><div class="eyebrow">PACKING STATION</div><h1>Packing</h1><p>Review picked orders and confirm packaging.</p></div><span class="outline-pill">PACK &amp; VERIFY</span></div>
+        <div class="process-banner"><div class="process-symbol violet-bg">▣</div><div><strong>Packing queue</strong><p>Check the order contents and mark each completed package as packed.</p></div></div>
+        <div class="work-grid" id="packingList"></div>
+      </section>
+
+      <section class="page" id="page-dispatch">
+        <div class="page-heading"><div><div class="eyebrow">OUTBOUND LOGISTICS</div><h1>Dispatch</h1><p>Send packed orders and track delivery progress.</p></div><span class="outline-pill">SHIP ORDERS</span></div>
+        <div class="process-banner"><div class="process-symbol green-bg">➤</div><div><strong>Ready for dispatch</strong><p>Confirm shipment to move an order into the dispatched stage.</p></div></div>
+        <div class="work-grid" id="dispatchList"></div>
+      </section>
+
+      <section class="page" id="page-reports">
+        <div class="page-heading"><div><div class="eyebrow">PERFORMANCE &amp; INSIGHTS</div><h1>Reports</h1><p>A quick snapshot of warehouse fulfillment performance.</p></div><div class="report-actions"><button class="secondary-btn" id="exportBtn">↓ CSV</button><button class="secondary-btn" id="exportExcel">↓ Excel</button><button class="primary-btn" id="exportPDF">↓ PDF</button></div></div>
+        <div class="stats-grid compact-stats"><article class="stat-card"><div class="stat-top"><span>Fulfillment rate</span><span class="stat-icon green">✓</span></div><div class="stat-value" id="reportRate">0%</div><div class="stat-foot">Orders delivered</div></article><article class="stat-card"><div class="stat-top"><span>Revenue</span><span class="stat-icon blue">₹</span></div><div class="stat-value" id="reportRevenue">₹0</div><div class="stat-foot">All order value</div></article><article class="stat-card"><div class="stat-top"><span>Units ordered</span><span class="stat-icon violet">▦</span></div><div class="stat-value" id="reportUnits">0</div><div class="stat-foot">Total item quantity</div></article></div>
+        <div class="report-grid"><article class="panel"><div class="panel-heading"><div><h2>Orders by status</h2><p>Current order distribution</p></div></div><div id="reportBars" class="report-bars"></div></article><article class="panel"><div class="panel-heading"><div><h2>Inventory snapshot</h2><p>Current stock by product</p></div></div><div id="inventorySnapshot" class="snapshot-list"></div></article></div>
+      </section>
+
+      <section class="page" id="page-analytics">
+        <div class="page-heading"><div><div class="eyebrow">BUSINESS INTELLIGENCE</div><h1>Analytics</h1><p>Warehouse performance at a glance.</p></div><button class="secondary-btn" id="refreshAnalytics">↻ Refresh</button></div>
+        <div class="stats-grid compact-stats"><article class="stat-card"><div class="stat-top"><span>Average order value</span><span class="stat-icon blue">₹</span></div><div class="stat-value" id="avgOrderValue">₹0</div><div class="stat-foot">Across all orders</div></article><article class="stat-card"><div class="stat-top"><span>Units in stock</span><span class="stat-icon violet">▦</span></div><div class="stat-value" id="analyticsStock">0</div><div class="stat-foot">Current inventory</div></article><article class="stat-card"><div class="stat-top"><span>Low-stock SKUs</span><span class="stat-icon amber">!</span></div><div class="stat-value" id="analyticsLow">0</div><div class="stat-foot">Reorder recommended</div></article></div>
+        <div class="report-grid"><article class="panel"><div class="panel-heading"><div><h2>Order status distribution</h2><p>Live order pipeline</p></div></div><div id="analyticsStatus" class="analytics-bars"></div></article><article class="panel"><div class="panel-heading"><div><h2>Top products</h2><p>By units ordered</p></div></div><div id="topProducts" class="snapshot-list"></div></article></div>
+      </section>
+      <section class="page" id="page-tracking"><div class="page-heading"><div><div class="eyebrow">CUSTOMER EXPERIENCE</div><h1>Order tracking</h1><p>Find an order and view its fulfillment timeline.</p></div></div><div class="toolbar"><div class="search-box"><span>⌕</span><input id="trackingSearch" placeholder="Enter order ID (e.g. WF-2401)" /></div><button class="primary-btn" id="trackBtn">Track order</button></div><article class="panel" id="trackingResult"><div class="empty-state"><strong>Track a shipment</strong>Enter an order ID to see its latest status and progress.</div></article></section>
+      <section class="page" id="page-suppliers"><div class="page-heading"><div><div class="eyebrow">PURCHASING & SOURCING</div><h1>Suppliers</h1><p>Maintain supplier contacts and purchasing details.</p></div><button class="primary-btn" id="addSupplierBtn">＋ Add supplier</button></div><article class="panel"><div class="table-wrap"><table><thead><tr><th>SUPPLIER</th><th>CONTACT</th><th>EMAIL</th><th>PRODUCT CATEGORY</th><th>ACTION</th></tr></thead><tbody id="suppliersTable"></tbody></table></div></article></section>
+      <section class="page" id="page-staff"><div class="page-heading"><div><div class="eyebrow">TEAM ACCESS</div><h1>Staff management</h1><p>Track team members and warehouse responsibilities.</p></div><button class="primary-btn" id="addStaffBtn">＋ Add staff member</button></div><article class="panel"><div class="table-wrap"><table><thead><tr><th>NAME</th><th>ROLE</th><th>EMAIL</th><th>STATUS</th><th>ACTION</th></tr></thead><tbody id="staffTable"></tbody></table></div></article><p class="muted-note">Staff directory entries are workspace records. Firebase sign-in accounts and access roles must be provisioned separately in Firebase Authentication / Firestore.</p></section>
+      <section class="page" id="page-notifications"><div class="page-heading"><div><div class="eyebrow">WORKSPACE ALERTS</div><h1>Notifications</h1><p>Important stock and order events.</p></div><button class="secondary-btn" id="clearNotifications">Clear read alerts</button></div><div class="notification-list" id="notificationList"></div></section>
+      <section class="page" id="page-barcode"><div class="page-heading"><div><div class="eyebrow">IDENTIFICATION & SCANNING</div><h1>Barcode tools</h1><p>Generate printable product barcodes or scan a barcode with your camera.</p></div></div><div class="report-grid"><article class="panel"><h2>Generate product barcode</h2><p class="muted-note">Choose a product SKU to create a Code 128 barcode.</p><label class="field-label">Product<select id="barcodeProduct"></select></label><button class="primary-btn" id="generateBarcode">Generate barcode</button><div id="barcodeOutput" class="barcode-output"><svg id="barcodeSvg"></svg></div><button class="secondary-btn" id="printBarcode">Print barcode</button></article><article class="panel"><h2>Scan barcode</h2><p class="muted-note">Camera access requires HTTPS or localhost and your permission.</p><div id="scannerReader"></div><button class="primary-btn" id="startScanner">Start camera scanner</button><button class="secondary-btn" id="stopScanner">Stop scanner</button><div id="scanResult" class="scan-result">No scan yet.</div></article></div></section>
+
+      <footer class="footer"><span>WAREFLOW · Warehouse Order Fulfillment System</span><span>Academic project · Roll No. 54</span></footer>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head"><div><div class="eyebrow">WAREFLOW WORKSPACE</div><h2 id="modalTitle">Create new order</h2></div><button class="close-btn" id="closeModal">×</button></div>
+      <form id="orderForm">
+        <label>Customer name<input name="customer" required placeholder="e.g. Aanya Sharma" /></label>
+        <div class="form-row"><label>Product<select name="product" id="orderProduct" required></select></label><label>Quantity<input name="quantity" type="number" min="1" value="1" required /></label></div>
+        <label>Delivery address<input name="address" required placeholder="Street, city, PIN code" /></label>
+        <div class="modal-actions"><button type="button" class="secondary-btn" id="cancelModal">Cancel</button><button type="submit" class="primary-btn">Create order</button></div>
+      </form>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <div class="auth-screen" id="authScreen"><div class="auth-card"><div class="brand-mark">W</div><div class="eyebrow">WAREFLOW SECURE WORKSPACE</div><h1>Welcome back</h1><p>Sign in to manage warehouse operations.</p><form id="authForm"><label>Email address<input type="email" id="authEmail" required placeholder="admin@company.com" autocomplete="username"></label><label>Password<input type="password" id="authPassword" required minlength="6" placeholder="At least 6 characters" autocomplete="current-password"></label><button class="primary-btn" type="submit" id="authSubmit">Sign in</button></form><button class="text-btn auth-toggle" id="authToggle">Create an account instead</button><p class="auth-help" id="authHelp">Firebase Authentication is enabled when configured. Demo mode can be used if Firebase is unavailable.</p></div></div>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <script src="app.js"></script><script type="module" src="firebase.js"></script><script src="features.js"></script>
+</body>
+</html>
